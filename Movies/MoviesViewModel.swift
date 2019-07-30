@@ -1,12 +1,12 @@
 import Foundation
 import RxSwift
 
-struct AlertMessage {
+struct AlertMessage: Equatable {
     let message: String
     let title: String
 }
 
-struct MovieData {
+struct MovieData: Equatable {
     let title: String
 }
 
