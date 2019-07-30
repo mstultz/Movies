@@ -3,11 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		97FDAA69D935E1F5E3F0FB22 /* Pods_Movies_MoviesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E3B1955C96A723ED4DCE15C /* Pods_Movies_MoviesTests.framework */; };
+		D871135A22EFC496008195B4 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D871135922EFC496008195B4 /* ApiClient.swift */; };
+		D871135C22EFC641008195B4 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = D871135B22EFC641008195B4 /* Models.swift */; };
+		D871135E22EFD3A4008195B4 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D871135D22EFD3A4008195B4 /* Environment.swift */; };
 		D879510C22EFAE170008ADD2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D879510B22EFAE170008ADD2 /* AppDelegate.swift */; };
 		D879510E22EFAE170008ADD2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D879510D22EFAE170008ADD2 /* ViewController.swift */; };
 		D879511322EFAE180008ADD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D879511222EFAE180008ADD2 /* Assets.xcassets */; };
@@ -31,6 +34,9 @@
 		2E3B1955C96A723ED4DCE15C /* Pods_Movies_MoviesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Movies_MoviesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9ECF12B201405792E878F0A2 /* Pods_Movies.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Movies.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC3AEF1F1DF603337F7C6FD9 /* Pods-Movies.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Movies.release.xcconfig"; path = "Target Support Files/Pods-Movies/Pods-Movies.release.xcconfig"; sourceTree = "<group>"; };
+		D871135922EFC496008195B4 /* ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
+		D871135B22EFC641008195B4 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		D871135D22EFD3A4008195B4 /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		D879510822EFAE170008ADD2 /* Movies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Movies.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D879510B22EFAE170008ADD2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D879510D22EFAE170008ADD2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -96,11 +102,14 @@
 		D879510A22EFAE170008ADD2 /* Movies */ = {
 			isa = PBXGroup;
 			children = (
+				D871135922EFC496008195B4 /* ApiClient.swift */,
 				D879510B22EFAE170008ADD2 /* AppDelegate.swift */,
-				D879510D22EFAE170008ADD2 /* ViewController.swift */,
 				D879511222EFAE180008ADD2 /* Assets.xcassets */,
-				D879511422EFAE180008ADD2 /* LaunchScreen.storyboard */,
 				D879511722EFAE180008ADD2 /* Info.plist */,
+				D871135D22EFD3A4008195B4 /* Environment.swift */,
+				D879511422EFAE180008ADD2 /* LaunchScreen.storyboard */,
+				D871135B22EFC641008195B4 /* Models.swift */,
+				D879510D22EFAE170008ADD2 /* ViewController.swift */,
 			);
 			path = Movies;
 			sourceTree = "<group>";
@@ -122,7 +131,6 @@
 				F73E5DA4E6884202825DC3A1 /* Pods-Movies-MoviesTests.debug.xcconfig */,
 				F50263F89D1CC886349272E1 /* Pods-Movies-MoviesTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -313,6 +321,9 @@
 			files = (
 				D879510E22EFAE170008ADD2 /* ViewController.swift in Sources */,
 				D879510C22EFAE170008ADD2 /* AppDelegate.swift in Sources */,
+				D871135A22EFC496008195B4 /* ApiClient.swift in Sources */,
+				D871135C22EFC641008195B4 /* Models.swift in Sources */,
+				D871135E22EFD3A4008195B4 /* Environment.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
