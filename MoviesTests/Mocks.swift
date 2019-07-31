@@ -4,8 +4,28 @@ import RxTest
 
 extension ApiClient {
     static let mock = ApiClient(
+        configuration: .just(.success(.mock)),
+        image: { _ in .just(.failure(.invalidUrl)) },
         topMovies: { _ in .just(.success(.mock)) },
         worstMovies: { _ in .just(.success(.mock)) }
+    )
+}
+
+extension URL {
+    static let mock = URL(string: "https://www.mark.wtf/")!
+}
+
+extension Configuration {
+    static let mock = Configuration(
+        images: Configuration.Images(
+            backdropSizes: ["100"],
+            baseUrl: .mock,
+            logoSizes: ["100"],
+            posterSizes: ["100"],
+            profileSizes: ["100"],
+            secureBaseUrl: .mock,
+            stillSizes: ["100"]
+        )
     )
 }
 
@@ -24,6 +44,7 @@ extension Movie {
     static let mockOne = Movie(
         id: 0,
         overview: "A good movie",
+        posterPath: "posterOne",
         releaseDate: .mock,
         title: "A New Hope",
         voteAverage: 0.6,
@@ -32,6 +53,7 @@ extension Movie {
     static let mockTwo = Movie(
         id: 1,
         overview: "A bad movie",
+        posterPath: "posterTwo",
         releaseDate: .mock,
         title: "The Empire Strikes Back",
         voteAverage: 0.7,
@@ -40,6 +62,7 @@ extension Movie {
     static let mockThree = Movie(
         id: 2,
         overview: "An ugly movie",
+        posterPath: "posterThree",
         releaseDate: .mock,
         title: "Return of the Jedi",
         voteAverage: 0.55,

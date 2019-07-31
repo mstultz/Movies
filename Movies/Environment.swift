@@ -15,5 +15,5 @@ extension Environment {
 }
 
 public var Current = Environment(
-    api: ApiClient(baseUri: "https://api.themoviedb.org/3", apiKey: apiKey)
+    api: ApiClient(baseUri: "https://api.themoviedb.org/3/", apiKey: apiKey)
 )

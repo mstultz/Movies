@@ -3,9 +3,9 @@ import RxSwift
 
 private let dateFormatter: DateFormatter = {
     let formatter = DateFormatter()
-    formatter.timeZone = TimeZone(secondsFromGMT: 0)
     formatter.dateFormat = "yyyy-MM-dd"
     formatter.locale = Locale(identifier: "en_US_POSIX")
+    formatter.timeZone = TimeZone(secondsFromGMT: 0)
     return formatter
 }()
 
@@ -22,6 +22,8 @@ public enum ApiError: Error {
 }
 
 public struct ApiClient {
+    public var configuration: Observable<Result<Configuration, ApiError>>
+    public var image: (URL) -> Observable<Result<UIImage, ApiError>>
     public var topMovies: (Int) -> Observable<Result<MoviesResponse, ApiError>>
     public var worstMovies: (Int) -> Observable<Result<MoviesResponse, ApiError>>
 }
@@ -30,6 +32,8 @@ extension ApiClient {
     public init(baseUri: String, apiKey: String) {
         let client = _Client(baseUri: baseUri, apiKey: apiKey)
         self = .init(
+            configuration: client.resource(request: .get("configuration")),
+            image: { client.image(request: .get("", baseUri: $0.absoluteString)) },
             topMovies: { page in
                 let queryItems = ["page": String(max(1, page)), "sort_by": "popularity.desc"]
                 return client.resource(request: .get("discover/movie", queryItems: queryItems))
@@ -43,12 +47,13 @@ extension ApiClient {
 }
 
 fileprivate struct Request {
+    var baseUri: String?
     var httpMethod: String
     var queryItems: [String: String?]
     var uri: String
 
-    static func get(_ uri: String, queryItems: [String: String?] = [:]) -> Request {
-        return Request(httpMethod: "GET", queryItems: queryItems, uri: uri)
+    static func get(_ uri: String, baseUri: String? = nil, queryItems: [String: String?] = [:]) -> Request {
+        return Request(baseUri: baseUri, httpMethod: "GET", queryItems: queryItems, uri: uri)
     }
 }
 
@@ -60,6 +65,13 @@ private class _Client {
     init(baseUri: String, apiKey: String) {
         self.apiKey = apiKey
         self.baseUri = baseUri
+    }
+
+    func image(request: Request) -> Observable<Result<UIImage, ApiError>> {
+        return response(request: request).map {
+            guard let image = UIImage(data: $0) else { return .failure(.invalidResponse) }
+            return .success(image)
+        }
     }
 
     func resource<Resource>(request: Request) -> Observable<Result<Resource, ApiError>> where Resource: Decodable {
@@ -75,7 +87,8 @@ private class _Client {
 
     func response(request: Request) -> Observable<Data> {
         return Observable<Data>.create { observer in
-            var urlComponents = URLComponents(string: "\(self.baseUri)/\(request.uri)")
+            let baseUri = request.baseUri ?? self.baseUri
+            var urlComponents = URLComponents(string: "\(baseUri)\(request.uri)")
             urlComponents?.queryItems = [URLQueryItem(name: "api_key", value: self.apiKey)] +
                 request.queryItems.map { URLQueryItem(name: $0, value: $1) }
 

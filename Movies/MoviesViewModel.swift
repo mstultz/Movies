@@ -7,41 +7,72 @@ struct AlertMessage: Equatable {
 }
 
 struct MovieData: Equatable {
-    let title: String
+    let thumbnailUrl: URL?
+    let titleText: String
 }
 
 func moviesViewModel(
+    configuration: Observable<Configuration>,
     viewDidLoad: Observable<Void>
 ) -> (
     movieData: Observable<[MovieData]>,
-    presentError: Observable<AlertMessage>
+    presentError: Observable<AlertMessage>,
+    updateConfiguration: Observable<Configuration>
 ) {
+    let configurationResponse = viewDidLoad
+        .flatMapLatest { Current.api.configuration }
 
-    let topMoviesResponse = viewDidLoad
-        .flatMapLatest { Current.api.topMovies(1) }
-
-    let topMovies = topMoviesResponse
-        .map { event -> MoviesResponse? in
+    let currentConfiguration = configurationResponse
+        .filterMap { event -> Configuration? in
             guard case let .success(response) = event else { return nil }
             return response
         }
-        .filter { $0 != nil }
-        .map { $0! }
 
-    let movieData = topMovies
-        .map {
-            $0.results.map { MovieData(title: $0.title) }
-        }
+    let updateConfiguration = currentConfiguration
 
-    let topMoviesError = topMoviesResponse
-        .map { event -> ApiError? in
+    let configurationError = configurationResponse
+        .filterMap { event -> ApiError? in
             guard case let .failure(error) = event else { return nil }
             return error
         }
-        .filter { $0 != nil }
-        .map { $0! }
 
-    let presentError = topMoviesError.map { error -> AlertMessage in
+    let topMoviesResponse = configuration
+        .flatMapLatest { _ in Current.api.topMovies(1) }
+
+    let topMovies = topMoviesResponse
+        .filterMap { event -> MoviesResponse? in
+            guard case let .success(response) = event else { return nil }
+            return response
+        }
+
+    let movieData = topMovies
+        .withLatestFrom(configuration) { ($1, $0) }
+        .map { configuration, movieResponse -> [MovieData] in
+            let thumbnailSize = configuration.images.posterSizes.first ?? ""
+            return movieResponse.results.map {
+                MovieData(
+                    thumbnailUrl: configuration
+                        .images
+                        .secureBaseUrl
+                        .appendingPathComponent(thumbnailSize)
+                        .appendingPathComponent($0.posterPath),
+                    titleText: $0.title
+                )
+            }
+        }
+
+    let topMoviesError = topMoviesResponse
+        .filterMap{ event -> ApiError? in
+            guard case let .failure(error) = event else { return nil }
+            return error
+        }
+
+    let errors = Observable.merge(
+        configurationError,
+        topMoviesError
+    )
+
+    let presentError = errors.map { error -> AlertMessage in
         switch error {
         case .decodeFailed:
             return AlertMessage(message: "Failed to decode response", title: "An error occurred")
@@ -54,6 +85,7 @@ func moviesViewModel(
 
     return (
         movieData: movieData,
-        presentError: presentError
+        presentError: presentError,
+        updateConfiguration: updateConfiguration
     )
 }
