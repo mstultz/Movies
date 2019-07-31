@@ -1,7 +1,6 @@
 @testable import Movies
 import RxSwift
 import RxTest
-import SnapshotTesting
 import XCTest
 
 class MoviesViewModelTests: TestCase {

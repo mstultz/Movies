@@ -52,19 +52,15 @@ final class MovieCell: UITableViewCell {
     func configure(with data: MovieData) {
         self.titleLabel.text = data.titleText
 
-        Observable
-            .just(data.thumbnailUrl)
-            .filterMap { url -> URL? in
-                guard let url = url else { return nil }
-                return url
-            }
-            .flatMapLatest { Current.api.image($0) }
+        guard let thumbnailUrl = data.thumbnailUrl else { return }
+
+        Current.api.image(thumbnailUrl)
             .filterMap { event -> UIImage? in
                 guard case let .success(image) = event else { return nil }
                 return image
             }
             .observeOn(Current.scheduler)
-            .bind(to: self.posterImageView.rx.image)
+            .subscribe(self.posterImageView.rx.image)
             .disposed(by: self.disposeBag)
     }
 }
