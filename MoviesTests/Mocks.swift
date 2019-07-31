@@ -1,11 +1,47 @@
+import CommonCrypto
 import Foundation
 @testable import Movies
 import RxTest
 
+func hashSha1(_ string: String) -> String? {
+    guard let data = string.data(using: .utf8) else { return nil }
+    var digest = Data(count: Int(CC_SHA1_DIGEST_LENGTH))
+    _ = digest.withUnsafeMutableBytes { digestBytes -> UInt8 in
+        data.withUnsafeBytes { dataBytes -> UInt8 in
+            guard
+                let dataByte = dataBytes.baseAddress,
+                let digestByte = digestBytes.bindMemory(to: UInt8.self).baseAddress
+                else { return 0 }
+            let length = CC_LONG(string.count)
+            CC_SHA1(dataByte, length, digestByte)
+            return 0
+        }
+    }
+    return digest.map { String(format: "%02hhx", $0) }.joined()
+}
+
 extension ApiClient {
     static let mock = ApiClient(
         configuration: .just(.success(.mock)),
-        image: { _ in .just(.failure(.invalidUrl)) },
+        image: {
+            let size = CGSize(width: 500, height: 500)
+            var startColor = UIColor.white.cgColor
+            var endColor = UIColor.black.cgColor
+
+            if let hash = hashSha1($0.absoluteString) {
+                let colors: [UIColor] = [.red, .green, .blue, .cyan, .yellow, .magenta, .orange, .purple]
+                startColor = colors[Int(hash.utf8CString[0]) % colors.count].cgColor
+                endColor = colors[Int(hash.utf8CString[1]) % colors.count].cgColor
+            }
+
+            let gradient = CAGradientLayer()
+            gradient.frame = CGRect(origin: .zero, size: size)
+            gradient.colors = [startColor, endColor]
+
+            let renderer = UIGraphicsImageRenderer(size: size)
+            let image = renderer.image { gradient.render(in: $0.cgContext) }
+            return .just(.success(image))
+        },
         topMovies: { _ in .just(.success(.mock)) },
         worstMovies: { _ in .just(.success(.mock)) }
     )
