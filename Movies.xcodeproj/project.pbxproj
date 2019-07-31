@@ -52,6 +52,7 @@
 		D88A1DAF22F101CC008563A9 /* MoviesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesViewModel.swift; sourceTree = "<group>"; };
 		D88A1DB122F1072E008563A9 /* Mocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mocks.swift; sourceTree = "<group>"; };
 		D88A1DB322F10A58008563A9 /* TestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCase.swift; sourceTree = "<group>"; };
+		D88A1DB522F10EE9008563A9 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		F50263F89D1CC886349272E1 /* Pods-Movies-MoviesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Movies-MoviesTests.release.xcconfig"; path = "Target Support Files/Pods-Movies-MoviesTests/Pods-Movies-MoviesTests.release.xcconfig"; sourceTree = "<group>"; };
 		F73E5DA4E6884202825DC3A1 /* Pods-Movies-MoviesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Movies-MoviesTests.debug.xcconfig"; path = "Target Support Files/Pods-Movies-MoviesTests/Pods-Movies-MoviesTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -88,6 +89,7 @@
 		D87950FF22EFAE170008ADD2 = {
 			isa = PBXGroup;
 			children = (
+				D88A1DB522F10EE9008563A9 /* README.md */,
 				D879510A22EFAE170008ADD2 /* Movies */,
 				D879511F22EFAE180008ADD2 /* MoviesTests */,
 				D879510922EFAE170008ADD2 /* Products */,
